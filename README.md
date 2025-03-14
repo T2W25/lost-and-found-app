@@ -27,12 +27,14 @@ The Community Lost and Found application serves as a centralized hub where users
   - React Bootstrap for UI components
   - React Icons for iconography
   - Date-fns for date handling
+  - ProtectedRoute for route protection
 
 - **Backend Services (Firebase)**
   - Firebase Authentication for user management
   - Cloud Firestore for database
   - Firebase Storage for image uploads
   - Firebase Hosting for deployment
+  - auth.js, config.js, items.js, notifications.js, users.js for Firebase services
 
 ## Getting Started
 
@@ -68,8 +70,8 @@ npm install
    npm start
    ```
 
-5. Open your browser and navigate to `http://localhost:3000`
+5. Open your browser and navigate to `http://localhost:3001`
 
 ## Project Status
 
-This project is currently under development. The initial UI framework has been set up, and core functionality is being implemented.
+This project is currently under development. The basic UI components (Header, Footer, HomePage, LoginPage, RegisterPage) have been created, and the application is running successfully.
