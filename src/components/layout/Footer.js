@@ -1,12 +1,14 @@
-// src/components/layout/Footer.js
 import React from 'react';
+import '../../assets/styles/Footer.css';
 
-function Footer() {
+const Footer = () => {
   return (
-    <footer>
-      <p>&copy; 2025 Community Lost and Found</p>
+    <footer className="footer">
+      <div className="footer-content">
+        <p>&copy; {new Date().getFullYear()} Lost & Found Platform | T2W25 Group 2</p>
+      </div>
     </footer>
   );
-}
+};
 
 export default Footer;
