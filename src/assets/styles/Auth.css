@@ -1,0 +1,131 @@
+/* 
+  Centering the authentication page vertically and horizontally 
+  with padding to create space around the content.
+*/
+.auth-page {
+    display: flex; /* Enables flexbox for centering */
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    padding: 40px 0; /* Adds vertical padding */
+}
+
+/* 
+  Styling for the authentication container, 
+  which holds the login and registration forms.
+*/
+.auth-container {
+    max-width: 450px; /* Limits the container's width */
+    width: 100%; /* Ensures it is responsive */
+    background-color: white; /* Sets a white background */
+    border-radius: 8px; /* Rounds the corners */
+    padding: 30px; /* Adds internal spacing */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Adds a soft shadow effect */
+}
+
+/* 
+  Styles the heading inside the authentication container.
+  Centers text and adds spacing below.
+*/
+.auth-container h1 {
+    margin-bottom: 10px; /* Adds spacing below the heading */
+    text-align: center; /* Centers the text */
+}
+
+/* 
+  Styles for the subtext below the heading, 
+  giving it a softer color and centering it.
+*/
+.auth-subtext {
+    text-align: center; /* Centers the text */
+    color: #6c757d; /* Sets a muted text color */
+    margin-bottom: 30px; /* Adds spacing below the subtext */
+}
+
+/* 
+  Adds margin to the form for better spacing.
+*/
+.auth-form {
+    margin-top: 20px; /* Adds space above the form */
+}
+
+/* 
+  Styles for options like "Forgot Password?" inside the form.
+  Aligns them to the right.
+*/
+.form-options {
+    display: flex; /* Uses flexbox for alignment */
+    justify-content: flex-end; /* Aligns content to the right */
+    margin-bottom: 20px; /* Adds spacing below */
+}
+
+/* 
+  Styles the "Forgot Password?" link.
+  Uses a blue color with a smaller font size.
+*/
+.forgot-password {
+    color: #007bff; /* Sets a blue color */
+    font-size: 14px; /* Reduces the font size */
+    text-decoration: none; /* Removes underline */
+}
+
+/* 
+  Styles the authentication buttons (Login & Register).
+  Makes them full-width and adjusts padding and font size.
+*/
+.auth-btn {
+    width: 100%; /* Makes the button full width */
+    padding: 12px; /* Adds padding for a comfortable click area */
+    font-size: 16px; /* Increases font size for readability */
+}
+
+/* 
+  Styles the footer text under the form, which contains 
+  the link to switch between login and registration.
+*/
+.auth-footer {
+    margin-top: 25px; /* Adds space above the footer */
+    text-align: center; /* Centers the text */
+    font-size: 14px; /* Sets a small font size */
+}
+
+/* 
+  Styles the password strength indicator.
+  Adds margin, padding, and rounded corners for better appearance.
+*/
+.password-strength {
+    margin-top: 5px; /* Adds small space above */
+    font-size: 12px; /* Sets a smaller font size */
+    padding: 3px 8px; /* Adds padding inside the indicator */
+    border-radius: 4px; /* Rounds the corners */
+}
+
+/* 
+  Styles for weak password strength levels (0-2).
+  Uses red text and a light red background for warning.
+*/
+.strength-0,
+.strength-1,
+.strength-2 {
+    color: #721c24; /* Sets dark red text */
+    background-color: #f8d7da; /* Sets light red background */
+}
+
+/* 
+  Styles for medium password strength levels (3-4).
+  Uses a yellow theme to indicate moderate security.
+*/
+.strength-3,
+.strength-4 {
+    color: #856404; /* Sets dark yellow text */
+    background-color: #fff3cd; /* Sets light yellow background */
+}
+
+/* 
+  Styles for strong password strength levels (5-6).
+  Uses green colors to indicate strong passwords.
+*/
+.strength-5,
+.strength-6 {
+    color: #155724; /* Sets dark green text */
+    background-color: #d4edda; /* Sets light green background */
+}
