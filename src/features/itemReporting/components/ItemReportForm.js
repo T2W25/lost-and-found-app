@@ -7,6 +7,22 @@ const ItemReportForm = ({ onSubmit, loading }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
  
+// Create simple image upload functionality
+  const handleImageChange = (event, setFieldValue) => {
+    const file = event.currentTarget.files[0];
+    if (file) {
+      setImageFile(file);
+      setFieldValue('image', file);
+ 
+// Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+ 
   const categories = [
     'Electronics',
     'Clothing',
@@ -68,6 +84,24 @@ const ItemReportForm = ({ onSubmit, loading }) => {
               dateFormat="MMMM d, yyyy"
             />
           </div>
+       
+        // Create simple image upload functionality
+          <div className="form-group">
+            <label htmlFor="image">Upload Image (Optional)</label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              className="form-control"
+              onChange={(event) => handleImageChange(event, setFieldValue)}
+            />
+            {imagePreview && (
+              <div className="image-preview">
+                <img src={imagePreview} alt="Preview" />
+              </div>
+            )}
+          </div>
  
           <div className="form-group">
             <label htmlFor="contactMethod">Preferred Contact Method</label>
@@ -103,3 +137,4 @@ const ItemReportForm = ({ onSubmit, loading }) => {
 };
  
 export default ItemReportForm;
+ 
