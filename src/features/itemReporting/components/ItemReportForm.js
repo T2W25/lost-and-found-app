@@ -60,8 +60,36 @@ const ItemReportForm = ({ onSubmit, loading }) => {
               className="form-control"
               placeholder="e.g., Blue Backpack, iPhone 12, etc."
             />
+            <ErrorMessage
+              name="name"
+              component="div"
+              className="error-message"
+            />
           </div>
- 
+
+          // Create item category dropdown 
+          <div className="form-group">
+            <label htmlFor="category">Category</label>
+            <Field
+              as="select"
+              name="category"
+              id="category"
+              className="form-control"
+            >
+              <option value="">Select a category</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </Field>
+            <ErrorMessage
+              name="category"
+              component="div"
+              className="error-message"
+            />
+          </div>
+
           <div className="form-group">
             <label htmlFor="description">Description</label>
             <Field
