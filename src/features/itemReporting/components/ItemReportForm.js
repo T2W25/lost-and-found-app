@@ -67,7 +67,7 @@ const ItemReportForm = ({ onSubmit, loading }) => {
             />
           </div>
 
-          // Create item category dropdown 
+          {/*Create item category dropdown*/}
           <div className="form-group">
             <label htmlFor="category">Category</label>
             <Field
@@ -113,7 +113,7 @@ const ItemReportForm = ({ onSubmit, loading }) => {
             />
           </div>
        
-        // Create simple image upload functionality
+          {/*Create simple image upload functionality*/}
           <div className="form-group">
             <label htmlFor="image">Upload Image (Optional)</label>
             <input
@@ -157,6 +157,17 @@ const ItemReportForm = ({ onSubmit, loading }) => {
               className="form-control"
               placeholder="Email or phone number"
             />
+          </div>
+          
+          {/* Implement form submission */}
+          <div className="form-actions">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
+              {loading ? 'Submitting...' : 'Report Item'}
+            </button>
           </div>
         </Form>
       )}

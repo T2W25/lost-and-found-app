@@ -7,6 +7,8 @@ import Footer from './components/layout/Footer';
 import HomePage from './features/home/pages/HomePage';
 import LoginPage from './features/auth/pages/LoginPage';
 import RegisterPage from './features/auth/pages/RegisterPage';
+import ReportItemPage from './features/itemReporting/pages/ReportItemPage';
+import ProtectedRoute from './routes/ProtectedRoute';
 import './assets/styles/App.css';
 
 function App() {
@@ -21,6 +23,14 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               {/* More routes will be added as we develop features */}
+              <Route
+                path="/report"
+                element={
+                  <ProtectedRoute>
+                    <ReportItemPage />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </main>
           <Footer />
