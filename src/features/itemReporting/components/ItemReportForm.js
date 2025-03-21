@@ -1,7 +1,27 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+ 
+// Validation schema
+// Added basic input validation
+const ItemReportSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Item name is required'),
+  description: Yup.string()
+    .min(10, 'Please provide more details')
+    .max(500, 'Description is too long')
+    .required('Category is required'),
+  lostDate: Yup.date()
+    .max(new Date(), 'Date cannot be in the future')
+    .required('Lost date is required'),
+  lostLocation: Yup.string().required('Location is required'),
+  contactMethod: Yup.string().required('Contact method is required'),
+  contactInfo: Yup.string().required('Contact information is required'),
+});
  
 const ItemReportForm = ({ onSubmit, loading }) => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -48,6 +68,12 @@ const ItemReportForm = ({ onSubmit, loading }) => {
         contactInfo: '',
         image: null,
       }}
+      // Added basic input validation
+      validationSchema={ItemReportSchema}
+      // Implement form submission
+      onSubmit={(values) => {
+        onSubmit(values, imageFile);
+      }}
     >
       {({ setFieldValue, values, errors, touched }) => (
         <Form className="item-report-form">
@@ -66,7 +92,7 @@ const ItemReportForm = ({ onSubmit, loading }) => {
               className="error-message"
             />
           </div>
-
+ 
           {/*Create item category dropdown*/}
           <div className="form-group">
             <label htmlFor="category">Category</label>
@@ -89,7 +115,7 @@ const ItemReportForm = ({ onSubmit, loading }) => {
               className="error-message"
             />
           </div>
-
+ 
           <div className="form-group">
             <label htmlFor="description">Description</label>
             <Field
@@ -99,6 +125,12 @@ const ItemReportForm = ({ onSubmit, loading }) => {
               className="form-control"
               rows="4"
               placeholder="Provide details about the item (color, brand, distinguishing features, etc.)"
+            />
+            {/* Add basic input validation */}
+            <ErrorMessage
+              name="description"
+              component="div"
+              className="error-message"
             />
           </div>
  
@@ -111,8 +143,14 @@ const ItemReportForm = ({ onSubmit, loading }) => {
               maxDate={new Date()}
               dateFormat="MMMM d, yyyy"
             />
+            {/* Add basic input validation */}
+            <ErrorMessage
+              name="lostDate"
+              component="div"
+              className="error-message"
+            />
           </div>
-       
+ 
           {/*Create simple image upload functionality*/}
           <div className="form-group">
             <label htmlFor="image">Upload Image (Optional)</label>
@@ -146,6 +184,12 @@ const ItemReportForm = ({ onSubmit, loading }) => {
                 </option>
               ))}
             </Field>
+            {/* Add basic input validation */}
+            <ErrorMessage
+              name="contactMethod"
+              component="div"
+              className="error-message"
+            />
           </div>
  
           <div className="form-group">
@@ -157,8 +201,14 @@ const ItemReportForm = ({ onSubmit, loading }) => {
               className="form-control"
               placeholder="Email or phone number"
             />
+            {/* Add basic input validation */}
+            <ErrorMessage
+              name="contactInfo"
+              component="div"
+              className="error-message"
+            />
           </div>
-          
+ 
           {/* Implement form submission */}
           <div className="form-actions">
             <button
