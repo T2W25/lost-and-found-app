@@ -31,6 +31,14 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/notifications"
+                element={
+                  <ProtectedRoute>
+                    <NotificationsPage />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </main>
           <Footer />
