@@ -9,6 +9,7 @@ import LoginPage from './features/auth/pages/LoginPage';
 import RegisterPage from './features/auth/pages/RegisterPage';
 import ReportItemPage from './features/itemReporting/pages/ReportItemPage';
 import ProtectedRoute from './routes/ProtectedRoute';
+import NotificationsPage from './features/notifications/pages/NotificationsPage';
 import './assets/styles/App.css';
 
 function App() {
