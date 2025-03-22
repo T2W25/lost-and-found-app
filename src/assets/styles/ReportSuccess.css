@@ -1,0 +1,42 @@
+.report-success-page {
+    padding: 20px 0;
+  }
+   
+  .success-card {
+    text-align: center;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+   
+  .success-icon {
+    font-size: 48px;
+    color: #28a745;
+    margin-bottom: 20px;
+  }
+   
+  .item-details {
+    margin: 30px 0;
+    text-align: left;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+  }
+   
+  .item-details ul {
+    list-style: none;
+    padding: 0;
+  }
+   
+  .item-details li {
+    margin-bottom: 10px;
+  }
+   
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+   

@@ -31,8 +31,16 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/report-success/:itemId"
+                element={
+                  <ProtectedRoute>
+                    <ReportSuccessPage />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
-          </main>
+            </main>
           <Footer />
         </div>
       </Router>
