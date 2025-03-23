@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import NotificationBell from '../../features/notifications/components/NotificationBell';
 import '../../assets/styles/Header.css';
-
+ 
 const Header = () => {
   const { currentUser, logout } = useAuth();
-
+ 
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/">CLFA</Link>
+        <Link to="/">Lost & Found</Link>
       </div>
       <nav className="nav">
         <ul>
@@ -27,7 +28,9 @@ const Header = () => {
               <li>
                 <Link to="/profile">Profile</Link>
               </li>
-              {/* TODO: Implement notifications feature */}
+              <li className="notification-item">
+                <NotificationBell />
+              </li>
               <li>
                 <button onClick={logout} className="logout-btn">
                   Logout
@@ -49,5 +52,6 @@ const Header = () => {
     </header>
   );
 };
-
+ 
 export default Header;
+ 

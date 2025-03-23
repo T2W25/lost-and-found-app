@@ -10,6 +10,8 @@ import RegisterPage from './features/auth/pages/RegisterPage';
 import ReportItemPage from './features/itemReporting/pages/ReportItemPage';
 import ReportSuccessPage from './features/itemReporting/pages/ReportSuccessPage';
 import ProtectedRoute from './routes/ProtectedRoute';
+import NotificationsPage from './features/notifications/pages/NotificationsPage';
+import ProfilePage from './features/profile/pages/ProfilePage';
 import './assets/styles/App.css';
 
 function App() {
@@ -37,6 +39,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ReportSuccessPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/notifications"
+                element={
+                  <ProtectedRoute>
+                    <NotificationsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <ProfilePage />
                   </ProtectedRoute>
                 }
               />
