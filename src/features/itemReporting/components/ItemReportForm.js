@@ -133,7 +133,23 @@ const ItemReportForm = ({ onSubmit, loading }) => {
               className="error-message"
             />
           </div>
- 
+          
+          <div className="form-group">
+            <label htmlFor="lostLocation">Where was it lost?</label>
+            <Field
+              type="text"
+              name="lostLocation"
+              id="lostLocation"
+              className="form-control"
+              placeholder="Be as specific as possible"
+            />
+            <ErrorMessage
+              name="lostLocation"
+              component="div"
+              className="error-message"
+            />
+          </div>
+          
           <div className="form-group">
             <label htmlFor="lostDate">When was it lost?</label>
             <DatePicker

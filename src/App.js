@@ -8,6 +8,7 @@ import HomePage from './features/home/pages/HomePage';
 import LoginPage from './features/auth/pages/LoginPage';
 import RegisterPage from './features/auth/pages/RegisterPage';
 import ReportItemPage from './features/itemReporting/pages/ReportItemPage';
+import ReportSuccessPage from './features/itemReporting/pages/ReportSuccessPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import './assets/styles/App.css';
 
