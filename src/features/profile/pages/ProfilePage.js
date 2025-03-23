@@ -2,11 +2,13 @@
  
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
+import {getUserProfile,updateUserProfile,} from '../../../services/firebase/users';
 import ProfileHeader from '../components/ProfileHeader'; // Displays user profile header with name and profile picture
 import ProfileTabs from '../components/ProfileTabs'; // Handles tab navigation for profile sections
 import PersonalInfoTab from '../components/PersonalInfoTab';
 import ContactPreferencesTab from '../components/ContactPreferencesTab';
 import '../../../assets/styles/Profile.css'; // Styles for the profile page
+
  
 // State management and initialization
 const ProfilePage = () => {

@@ -73,7 +73,7 @@ const PersonalInfoTab = ({ profile, onUpdate }) => {
         </div>
       )}
 
-      // Formik form for updating user personal information
+       {/*Formik form for updating user personal information*/}
       <Formik
         initialValues={{
           displayName: profile?.displayName || '',
