@@ -1,0 +1,157 @@
+/* Item Detail Page Styles */
+.item-detail-page {
+  padding: 20px 0;
+}
+
+.item-navigation {
+  margin-bottom: 20px;
+}
+
+.back-link {
+  display: inline-block;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.item-detail-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.item-detail-header {
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-detail-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.item-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.item-detail-content {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.item-image-container {
+  flex: 1;
+  min-width: 300px;
+  margin-right: 30px;
+  margin-bottom: 20px;
+}
+
+.item-detail-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.no-image-detail {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.item-info {
+  flex: 2;
+  min-width: 300px;
+}
+
+.info-group {
+  margin-bottom: 20px;
+}
+
+.info-group h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  color: #495057;
+}
+
+.info-group p {
+  margin: 0;
+  line-height: 1.5;
+  color: #333;
+}
+
+.claim-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.claim-section p {
+  margin-bottom: 15px;
+}
+
+.claim-success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 50px 20px;
+  font-size: 1.1rem;
+}
+
+.error {
+  color: #dc3545;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .item-detail-content {
+    flex-direction: column;
+  }
+  
+  .item-image-container {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+  
+  .item-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .item-status {
+    margin-top: 10px;
+  }
+}
