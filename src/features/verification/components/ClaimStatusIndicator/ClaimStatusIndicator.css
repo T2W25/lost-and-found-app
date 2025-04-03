@@ -1,0 +1,149 @@
+.claim-status-indicator {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+}
+
+/* Small size */
+.claim-status-indicator.small {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Medium size (default) */
+.claim-status-indicator.medium {
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+}
+
+/* Large size */
+.claim-status-indicator.large {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.status-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.status-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-text {
+  font-weight: 600;
+}
+
+.status-date {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+.status-notes {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: #495057;
+}
+
+/* Status colors */
+.status-pending {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+
+.status-pending .status-icon {
+  color: #ffc107;
+}
+
+.status-approved {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.status-approved .status-icon {
+  color: #28a745;
+}
+
+.status-rejected {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.status-rejected .status-icon {
+  color: #dc3545;
+}
+
+.status-flagged {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+
+.status-flagged .status-icon {
+  color: #fd7e14;
+}
+
+.status-expired {
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+  color: #6c757d;
+}
+
+.status-expired .status-icon {
+  color: #6c757d;
+}
+
+.status-unknown {
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+  color: #6c757d;
+}
+
+.status-unknown .status-icon {
+  color: #6c757d;
+}
+
+@media (max-width: 576px) {
+  .claim-status-indicator.large {
+    padding: 12px;
+  }
+  
+  .status-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .status-icon {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}
