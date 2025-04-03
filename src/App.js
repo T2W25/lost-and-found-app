@@ -52,7 +52,6 @@ function App() {
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>
                   <Route path="/report" element={<ReportItemPage />} />
-                  <Route path="/report-item" element={<ReportItemPage />} />
                   <Route path="/report-success" element={<ReportSuccessPage />} />
                   <Route path="/report-success/:itemId" element={<ReportSuccessPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
