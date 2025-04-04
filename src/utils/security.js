@@ -51,3 +51,8 @@ export const sanitizeInput = (input) => {
       Math.random().toString(36).substring(2, 15)
     );
   };
+
+  // Placeholder hasAccess function
+  export const hasAccess = () => {
+    return true;
+  };

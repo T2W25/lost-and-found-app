@@ -1,0 +1,156 @@
+.loading-state {
+    width: 100%;
+  }
+   
+  .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+  }
+   
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 123, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: #007bff;
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 16px;
+  }
+   
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+   
+  .loading-message {
+    color: #6c757d;
+    font-size: 1rem;
+  }
+   
+  /* Skeleton loading for results */
+  .loading-results {
+    width: 100%;
+  }
+   
+  .loading-header {
+    margin-bottom: 24px;
+  }
+   
+  .loading-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+   
+  .skeleton-card {
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+   
+  .skeleton-image {
+    height: 180px;
+    background-color: #e9ecef;
+    margin-bottom: 16px;
+  }
+   
+  .skeleton-content {
+    padding: 16px;
+  }
+   
+  .skeleton-line {
+    height: 12px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+   
+  .skeleton-title {
+    height: 24px;
+    width: 60%;
+  }
+   
+  .skeleton-subtitle {
+    width: 40%;
+  }
+   
+  .skeleton-card-title {
+    height: 16px;
+    width: 80%;
+    margin-bottom: 16px;
+  }
+   
+  .skeleton-short {
+    width: 60%;
+  }
+   
+  /* Skeleton loading for item details */
+  .loading-item {
+    width: 100%;
+  }
+   
+  .skeleton-item-header {
+    margin-bottom: 24px;
+  }
+   
+  .skeleton-item-content {
+    display: flex;
+    gap: 24px;
+  }
+   
+  .skeleton-image.skeleton-large {
+    width: 300px;
+    height: 300px;
+    flex-shrink: 0;
+  }
+   
+  .skeleton-details {
+    flex: 1;
+    padding: 16px;
+  }
+   
+  /* Skeleton loading for forms */
+  .loading-form {
+    width: 100%;
+    padding: 24px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+   
+  .skeleton-form-fields {
+    margin: 24px 0;
+  }
+   
+  .skeleton-field {
+    height: 48px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+   
+  .skeleton-button {
+    height: 40px;
+    width: 120px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+   
+  @keyframes pulse {
+    0% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0.6;
+    }
+  }

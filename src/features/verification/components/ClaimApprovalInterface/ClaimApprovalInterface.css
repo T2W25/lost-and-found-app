@@ -1,0 +1,341 @@
+.claim-approval-interface {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.claim-approval-interface h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: #343a40;
+}
+
+.decision-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.decision-option {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.decision-option:hover {
+  border-color: #adb5bd;
+}
+
+.decision-option input[type="radio"] {
+  margin-right: 16px;
+  margin-top: 4px;
+}
+
+.option-content {
+  flex: 1;
+}
+
+.option-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.option-label.approve {
+  color: #28a745;
+}
+
+.option-label.reject {
+  color: #dc3545;
+}
+
+.option-label.flag {
+  color: #fd7e14;
+}
+
+.option-description {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-decision {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-decision:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.submit-decision.approved {
+  background-color: #28a745;
+  color: white;
+}
+
+.submit-decision.approved:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.submit-decision.rejected {
+  background-color: #dc3545;
+  color: white;
+}
+
+.submit-decision.rejected:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.submit-decision.flagged {
+  background-color: #fd7e14;
+  color: white;
+}
+
+.submit-decision.flagged:hover:not(:disabled) {
+  background-color: #e96b02;
+}
+
+.confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirmation-dialog {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.confirmation-dialog h4 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #343a40;
+}
+
+.confirmation-dialog p {
+  margin-bottom: 24px;
+  color: #495057;
+  line-height: 1.5;
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel-button, .confirm-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.cancel-button:hover {
+  background-color: #dee2e6;
+}
+
+.confirm-button {
+  color: white;
+}
+
+.confirm-button.approved {
+  background-color: #28a745;
+}
+
+.confirm-button.approved:hover {
+  background-color: #218838;
+}
+
+.confirm-button.rejected {
+  background-color: #dc3545;
+}
+
+.confirm-button.rejected:hover {
+  background-color: #c82333;
+}
+
+.confirm-button.flagged {
+  background-color: #fd7e14;
+}
+
+.confirm-button.flagged:hover {
+  background-color: #e96b02;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.claim-already-processed {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  border-left: 4px solid #6c757d;
+  color: #495057;
+}
+
+.status-notes {
+  font-style: italic;
+}
+
+.claim-verification-details {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  border: 1px solid #dee2e6;
+}
+
+.verification-section {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.verification-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.verification-section h4 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #495057;
+}
+
+.verification-section p {
+  margin: 0;
+  color: #212529;
+  line-height: 1.5;
+}
+
+.proof-section {
+  background-color: #f8f9fa;
+  padding: 12px;
+  border-radius: 4px;
+  border-left: 3px solid #28a745;
+}
+
+.request-info-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.2s;
+}
+
+.request-info-button:hover {
+  background-color: #5a6268;
+}
+
+.more-info-form {
+  margin-top: 16px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
+
+.send-request-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.send-request-button:hover {
+  background-color: #0069d9;
+}
+
+.send-request-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 576px) {
+  .form-actions {
+    justify-content: center;
+  }
+  
+  .submit-decision {
+    width: 100%;
+  }
+  
+  .confirmation-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .cancel-button, .confirm-button {
+    width: 100%;
+  }
+}
