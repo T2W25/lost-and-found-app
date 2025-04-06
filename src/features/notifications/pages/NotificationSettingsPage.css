@@ -1,0 +1,138 @@
+.notification-settings-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.notification-settings-page h1 {
+  margin-bottom: 24px;
+  color: #343a40;
+}
+
+.settings-container {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.settings-section {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.settings-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.settings-section h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+  color: #343a40;
+}
+
+.section-description {
+  margin-bottom: 20px;
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.frequency-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.frequency-option {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.frequency-option:hover {
+  border-color: #adb5bd;
+}
+
+.frequency-option input[type="radio"] {
+  margin-right: 16px;
+  margin-top: 4px;
+}
+
+.option-content {
+  flex: 1;
+}
+
+.option-label {
+  display: block;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 4px;
+}
+
+.option-description {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.save-button {
+  padding: 10px 24px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.save-button:hover:not(:disabled) {
+  background-color: #0069d9;
+}
+
+.save-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  font-style: italic;
+  color: #6c757d;
+}
+
+@media (max-width: 576px) {
+  .settings-container {
+    padding: 16px;
+  }
+  
+  .frequency-option {
+    padding: 12px;
+  }
+  
+  .settings-actions {
+    justify-content: center;
+  }
+  
+  .save-button {
+    width: 100%;
+  }
+}
