@@ -1,123 +1,254 @@
-// Component for managing user contact preferences. Allows user to update their notification preferences (email, push, sms).
+// Component for managing user contact preferences. 
+// This component allows users to set their notification preferences for various events, such as new claims, claim updates, and messages. 
+// It also provides options for email and push notifications, as well as the frequency of email notifications. The component fetches the user's current preferences from Firebase and allows them to update their settings. 
+// It handles loading states, error messages, and success notifications when preferences are saved.
+import React, { useState, useEffect } from 'react';
+import {
+  getUserNotificationPreferences,
+  updateUserNotificationPreferences
+} from '../../../services/firebase/notificationPreferences';
+import './ContactPreferencesTab.css';
 
-import React, { useState } from 'react';
-import { Formik, Form, Field } from 'formik';
+const ContactPreferencesTab = ({ userId }) => {
+  const [preferences, setPreferences] = useState({
+    emailNotifications: true,
+    pushNotifications: false,
+    notifyOnNewClaims: true,
+    notifyOnClaimUpdates: true,
+    notifyOnMessages: true,
+    notifyOnSystemUpdates: false,
+    emailFrequency: 'immediate'
+  });
+  
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
-const ContactPreferencesTab = ({ profile, onUpdate }) => {
-  const [updateStatus, setUpdateStatus] = useState({ message: '', type: '' });
-
-  // Handle form submission
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const result = await onUpdate({
-        notificationPreferences: {
-          email: values.emailNotifications,
-          push: values.pushNotifications,
-          sms: values.smsNotifications,
-        },
-      });
-
-      if (result.success) {
-        setUpdateStatus({
-          message: 'Preferences updated successfully!',
-          type: 'success',
-        });
-      } else {
-        setUpdateStatus({
-          message: result.error || 'Failed to update preferences.',
-          type: 'error',
-        });
+  useEffect(() => {
+    const fetchPreferences = async () => {
+      try {
+        setLoading(true);
+        const userPrefs = await getUserNotificationPreferences(userId);
+        if (userPrefs) {
+          setPreferences(userPrefs);
+        }
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching notification preferences:', err);
+        setError('Failed to load your notification preferences. Please try again later.');
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      setUpdateStatus({
-        message: 'An error occurred. Please try again.',
-        type: 'error',
-      });
+    };
+
+    if (userId) {
+      fetchPreferences();
+    }
+  }, [userId]);
+
+  const handleToggleChange = (field) => {
+    setPreferences({
+      ...preferences,
+      [field]: !preferences[field]
+    });
+    // Reset success message when user makes changes
+    setSaveSuccess(false);
+  };
+
+  const handleFrequencyChange = (e) => {
+    setPreferences({
+      ...preferences,
+      emailFrequency: e.target.value
+    });
+    // Reset success message when user makes changes
+    setSaveSuccess(false);
+  };
+
+  const handleSavePreferences = async () => {
+    try {
+      setSaving(true);
+      setError(null);
+      await updateUserNotificationPreferences(userId, preferences);
+      setSaveSuccess(true);
+      
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setSaveSuccess(false);
+      }, 3000);
+    } catch (err) {
+      console.error('Error saving notification preferences:', err);
+      setError('Failed to save your notification preferences. Please try again.');
     } finally {
-      setSubmitting(false);
+      setSaving(false);
     }
   };
-  
-  // Set initial notification preferences
-  const initialNotificationPrefs = profile?.notificationPreferences || {
-    email: true,
-    push: true,
-    sms: false,
-  };
-  
+
+  if (loading) {
+    return <div className="loading">Loading your preferences...</div>;
+  }
+
   return (
     <div className="contact-preferences-tab">
-      <h2>Contact Preferences</h2>
-
-      {updateStatus.message && (
-        <div
-          className={`alert ${
-            updateStatus.type === 'success' ? 'alert-success' : 'alert-danger'
-          }`}
-        >
-          {updateStatus.message}
+      <h2>Notification Preferences</h2>
+      
+      {error && <div className="error-message">{error}</div>}
+      {saveSuccess && <div className="success-message">Your preferences have been saved!</div>}
+      
+      <div className="preferences-section">
+        <h3>Notification Methods</h3>
+        <div className="preference-toggle">
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              checked={preferences.emailNotifications}
+              onChange={() => handleToggleChange('emailNotifications')}
+            />
+            <span className="toggle-text">Email Notifications</span>
+          </label>
+          <p className="preference-description">
+            Receive notifications via email
+          </p>
+        </div>
+        
+        <div className="preference-toggle">
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              checked={preferences.pushNotifications}
+              onChange={() => handleToggleChange('pushNotifications')}
+            />
+            <span className="toggle-text">Push Notifications</span>
+          </label>
+          <p className="preference-description">
+            Receive notifications in your browser or mobile device
+          </p>
+        </div>
+      </div>
+      
+      <div className="preferences-section">
+        <h3>Notification Types</h3>
+        <div className="preference-toggle">
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              checked={preferences.notifyOnNewClaims}
+              onChange={() => handleToggleChange('notifyOnNewClaims')}
+            />
+            <span className="toggle-text">New Claims</span>
+          </label>
+          <p className="preference-description">
+            Notify me when someone claims an item I reported
+          </p>
+        </div>
+        
+        <div className="preference-toggle">
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              checked={preferences.notifyOnClaimUpdates}
+              onChange={() => handleToggleChange('notifyOnClaimUpdates')}
+            />
+            <span className="toggle-text">Claim Updates</span>
+          </label>
+          <p className="preference-description">
+            Notify me when there are updates to my claims
+          </p>
+        </div>
+        
+        <div className="preference-toggle">
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              checked={preferences.notifyOnMessages}
+              onChange={() => handleToggleChange('notifyOnMessages')}
+            />
+            <span className="toggle-text">Messages</span>
+          </label>
+          <p className="preference-description">
+            Notify me when I receive new messages
+          </p>
+        </div>
+        
+        <div className="preference-toggle">
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              checked={preferences.notifyOnSystemUpdates}
+              onChange={() => handleToggleChange('notifyOnSystemUpdates')}
+            />
+            <span className="toggle-text">System Updates</span>
+          </label>
+          <p className="preference-description">
+            Notify me about system updates and new features
+          </p>
+        </div>
+      </div>
+      
+      {preferences.emailNotifications && (
+        <div className="preferences-section">
+          <h3>Email Frequency</h3>
+          <div className="radio-options">
+            <label className="radio-option">
+              <input
+                type="radio"
+                name="emailFrequency"
+                value="immediate"
+                checked={preferences.emailFrequency === 'immediate'}
+                onChange={handleFrequencyChange}
+              />
+              <div className="option-content">
+                <span className="option-label">Immediate</span>
+                <p className="option-description">
+                  Send emails as events occur
+                </p>
+              </div>
+            </label>
+            
+            <label className="radio-option">
+              <input
+                type="radio"
+                name="emailFrequency"
+                value="daily"
+                checked={preferences.emailFrequency === 'daily'}
+                onChange={handleFrequencyChange}
+              />
+              <div className="option-content">
+                <span className="option-label">Daily Digest</span>
+                <p className="option-description">
+                  Send a daily summary of all notifications
+                </p>
+              </div>
+            </label>
+            
+            <label className="radio-option">
+              <input
+                type="radio"
+                name="emailFrequency"
+                value="weekly"
+                checked={preferences.emailFrequency === 'weekly'}
+                onChange={handleFrequencyChange}
+              />
+              <div className="option-content">
+                <span className="option-label">Weekly Digest</span>
+                <p className="option-description">
+                  Send a weekly summary of all notifications
+                </p>
+              </div>
+            </label>
+          </div>
         </div>
       )}
       
-      <Formik
-        initialValues={{
-          emailNotifications: initialNotificationPrefs.email,
-          pushNotifications: initialNotificationPrefs.push,
-          smsNotifications: initialNotificationPrefs.sms,
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting }) => (
-          <Form className="preferences-form">
-            <div className="form-section">
-              <h3>Notification Settings</h3>
-              <p className="section-description">
-                Choose how you'd like to be notified about potential matches and
-                account updates.
-              </p>
-
-              <div className="checkbox-group">
-                <label className="checkbox-container">
-                  <Field type="checkbox" name="emailNotifications" />
-                  <span className="checkbox-label">Email Notifications</span>
-                  <p className="checkbox-description">
-                    Receive notifications about potential matches via email
-                  </p>
-                </label>
-              </div>
-
-              <div className="checkbox-group">
-                <label className="checkbox-container">
-                  <Field type="checkbox" name="pushNotifications" />
-                  <span className="checkbox-label">Push Notifications</span>
-                  <p className="checkbox-description">
-                    Receive in-app notifications
-                  </p>
-                </label>
-              </div>
-
-              <div className="checkbox-group">
-                <label className="checkbox-container">
-                  <Field type="checkbox" name="smsNotifications" />
-                  <span className="checkbox-label">SMS Notifications</span>
-                  <p className="checkbox-description">
-                    Receive text messages for important updates (requires phone
-                    number)
-                  </p>
-                </label>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Saving...' : 'Save Preferences'}
-            </button>
-          </Form>
-        )}
-      </Formik>
+      <div className="preferences-actions">
+        <button
+          className="save-preferences-btn"
+          onClick={handleSavePreferences}
+          disabled={saving}
+        >
+          {saving ? 'Saving...' : 'Save Preferences'}
+        </button>
+      </div>
     </div>
   );
 };
