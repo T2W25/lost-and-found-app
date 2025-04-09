@@ -1,100 +1,115 @@
-// Main profile page component with tabbed interface for user profile management
- 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
-import {getUserProfile,updateUserProfile,} from '../../../services/firebase/users';
-import ProfileHeader from '../components/ProfileHeader'; // Displays user profile header with name and profile picture
-import ProfileTabs from '../components/ProfileTabs'; // Handles tab navigation for profile sections
+import { useProfile } from '../../../contexts/ProfileContext';
+import ProfileHeader from '../components/ProfileHeader';
+import ProfileTabs from '../components/ProfileTabs';
 import PersonalInfoTab from '../components/PersonalInfoTab';
+import UserItemsTab from '../components/UserItemsTab';
+import UserClaimsTab from '../components/UserClaimsTab';
 import ContactPreferencesTab from '../components/ContactPreferencesTab';
-import '../../../assets/styles/Profile.css'; // Styles for the profile page
+import EditableProfileForm from '../components/EditableProfileForm';
+import StatusMessages from '../components/StatusMessages';
+import AccountStatistics from '../components/AccountStatistics';
+import './ProfilePage.css';
 
- 
-// State management and initialization
-const ProfilePage = () => {
-  const [profile, setProfile] = useState(null);
-  const [activeTab, setActiveTab] = useState('personal');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+function ProfilePage() {
   const { currentUser } = useAuth();
- 
-  // Profile data retrieval
-  // Fetches user profile data on component mount
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      if (!currentUser) return;
- 
-      try {
-        setLoading(true);
- 
-        // Get user profile
-        const userProfile = await getUserProfile(currentUser.uid);
-        setProfile(userProfile);
- 
-      } catch (error) {
-        console.error('Error fetching profile data:', error);
-        console.error('Error details:', error.message, error.code);
-        console.error('Current user:', currentUser ? currentUser.uid : 'No user');
-        setError(`Failed to load profile data. Error: ${error.message}`);
-      } finally {
-        setLoading(false);
-      }
-    };
- 
-    fetchProfileData();
-  }, [currentUser]);
- 
-  // edit functionality - handles updating user profile data in Firestore
-  const handleUpdateProfile = async (updatedData) => {
-    try {
-      await updateUserProfile(currentUser.uid, updatedData);
-      // Update local state
-      setProfile((prev) => ({
-        ...prev,
-        ...updatedData,
-      }));
-      return { success: true };
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      return { success: false, error: 'Failed to update profile.' };
-    }
+  const { profile, loading } = useProfile();
+  const [activeTab, setActiveTab] = useState('personal');
+  const [editMode, setEditMode] = useState(false);
+  const [statusMessage, setStatusMessage] = useState(null);
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setEditMode(false);
   };
- 
+
+  const handleEditToggle = () => {
+    setEditMode(!editMode);
+  };
+
+  const handleProfileSave = () => {
+    setEditMode(false);
+    setStatusMessage({
+      type: 'success',
+      message: 'Profile updated successfully!'
+    });
+  };
+
+  const handleStatusDismiss = () => {
+    setStatusMessage(null);
+  };
+
   if (loading) {
     return <div className="loading">Loading profile...</div>;
   }
- 
-  if (error) {
-    return <div className="error">{error}</div>;
+
+  if (!currentUser) {
+    return (
+      <div className="profile-page">
+        <div className="not-logged-in">
+          <h2>Not Logged In</h2>
+          <p>Please log in to view your profile.</p>
+          <a href="/login" className="login-button">Log In</a>
+        </div>
+      </div>
+    );
   }
- 
+
   return (
     <div className="profile-page">
-      <div className="container">
-        <ProfileHeader profile={profile} />
- 
-        <div className="profile-content">
-          <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
- 
-          <div className="tab-content">
-            {activeTab === 'personal' && (
-              <PersonalInfoTab
-                profile={profile}
-                onUpdate={handleUpdateProfile}
-              />
-            )}
- 
-            {activeTab === 'contact' && (
-              <ContactPreferencesTab
-                profile={profile}
-                onUpdate={handleUpdateProfile}
-              />
-            )}
-          </div>
+      {statusMessage && (
+        <StatusMessages
+          type={statusMessage.type}
+          message={statusMessage.message}
+          onDismiss={handleStatusDismiss}
+        />
+      )}
+      
+      <ProfileHeader
+        user={profile}
+        onEditToggle={handleEditToggle}
+        isEditing={editMode}
+      />
+      
+      <div className="profile-content">
+        <ProfileTabs
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
+        
+        <div className="tab-content">
+          {activeTab === 'personal' && (
+            <>
+              {editMode ? (
+                <EditableProfileForm onSave={handleProfileSave} />
+              ) : (
+                <>
+                  <AccountStatistics userId={currentUser.uid} />
+                  <PersonalInfoTab
+                    user={profile}
+                    onEdit={handleEditToggle}
+                  />
+                </>
+              )}
+            </>
+          )}
+          
+          {activeTab === 'items' && (
+            <UserItemsTab userId={currentUser.uid} />
+          )}
+          
+          {activeTab === 'claims' && (
+            <UserClaimsTab userId={currentUser.uid} />
+          )}
+          
+          {activeTab === 'preferences' && (
+            <ContactPreferencesTab userId={currentUser.uid} />
+          )}
         </div>
       </div>
     </div>
   );
-};
- 
+}
+
 export default ProfilePage;

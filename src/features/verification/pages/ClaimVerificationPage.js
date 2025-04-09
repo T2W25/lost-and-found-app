@@ -6,6 +6,7 @@ import { getUserById } from '../../../services/firebase/users';
 import { useAuth } from '../../../contexts/AuthContext';
 import ClaimStatusIndicator from '../components/ClaimStatusIndicator';
 import ClaimApprovalInterface from '../components/ClaimApprovalInterface';
+import MoreInfoResponse from '../components/MoreInfoResponse';
 import LoadingStates from '../../itemSearch/components/LoadingStates';
 import './ClaimVerificationPage.css';
 
@@ -27,19 +28,52 @@ function ClaimVerificationPage() {
         setError(null);
         
         // Get claim details
-        const claimData = await getClaimById(claimId);
-        setClaim(claimData);
+        let claimData;
+        try {
+          claimData = await getClaimById(claimId);
+          setClaim(claimData);
+        } catch (claimErr) {
+          console.error("Error fetching claim details:", claimErr);
+          setError("Failed to load claim details. Please try again.");
+          setLoading(false);
+          return;
+        }
         
-        // Get item and claimant details in parallel
-        const [itemData, claimantData] = await Promise.all([
-          getItemById(claimData.itemId),
-          getUserById(claimData.claimantId)
-        ]);
-        
+        // Get item details
+        let itemData;
+        try {
+          itemData = await getItemById(claimData.itemId);
+        } catch (itemErr) {
+          console.error("Error fetching item details:", itemErr);
+          // Use default item data
+          itemData = {
+            id: claimData.itemId,
+            name: "Unknown Item",
+            category: "Unknown",
+            reportedAt: new Date().toISOString(),
+            locationFound: "Unknown",
+            description: "Item details unavailable",
+            reportedBy: "unknown"
+          };
+        }
         setItem(itemData);
+        
+        // Get claimant details
+        let claimantData;
+        try {
+          claimantData = await getUserById(claimData.claimantId);
+        } catch (userErr) {
+          console.error("Error fetching claimant details:", userErr);
+          // Use default claimant data
+          claimantData = {
+            id: claimData.claimantId,
+            displayName: "Unknown User",
+            email: "unknown@example.com"
+          };
+        }
         setClaimant(claimantData);
       } catch (err) {
-        console.error("Error fetching claim details:", err);
+        console.error("Error in fetchClaimDetails:", err);
         setError("Failed to load claim details. Please try again.");
       } finally {
         setLoading(false);
@@ -59,6 +93,12 @@ function ClaimVerificationPage() {
   };
 
   const handleBackToItem = () => {
+    // If the item is deleted or has an error, navigate to the home page instead
+    if (item.isDeleted || item.isError) {
+      navigate('/');
+      return;
+    }
+    
     navigate(`/items/${item.id}`);
   };
 
@@ -99,11 +139,13 @@ function ClaimVerificationPage() {
   }
 
   // Check if user can approve/reject the claim
-  const canApproveClaim = currentUser && (
-    currentUser.uid === item.reportedBy || // Item reporter
-    currentUser.role === 'admin' || // Admin
-    currentUser.role === 'moderator' // Moderator
-  );
+  const canApproveClaim = currentUser &&
+    // Don't allow approving claims for deleted or error items unless user is admin
+    (!item.isDeleted && !item.isError || currentUser.role === 'admin') && (
+      currentUser.uid === item.reportedBy || // Item reporter
+      currentUser.role === 'admin' || // Admin
+      currentUser.role === 'moderator' // Moderator
+    );
 
   return (
     <div className="claim-verification-page">
@@ -125,42 +167,65 @@ function ClaimVerificationPage() {
       <div className="claim-content">
         <div className="item-details">
           <h2>Item Details</h2>
-          <div className="item-card">
-            {item.imageUrl && (
-              <div className="item-image">
-                <img src={item.imageUrl} alt={item.name} />
+          
+          {item.isDeleted && (
+            <div className="item-deleted-notice">
+              <div className="notice-icon">⚠️</div>
+              <div className="notice-content">
+                <h3>Item No Longer Available</h3>
+                <p>This item has been removed from the database, but the claim information is still preserved.</p>
               </div>
-            )}
-            
-            <div className="item-info">
-              <h3>{item.name}</h3>
-              
-              <div className="item-metadata">
-                <div className="metadata-item">
-                  <span className="metadata-label">Category:</span>
-                  <span className="metadata-value">{item.category}</span>
-                </div>
-                
-                <div className="metadata-item">
-                  <span className="metadata-label">Found On:</span>
-                  <span className="metadata-value">
-                    {new Date(item.reportedAt).toLocaleDateString()}
-                  </span>
-                </div>
-                
-                <div className="metadata-item">
-                  <span className="metadata-label">Location:</span>
-                  <span className="metadata-value">{item.locationFound}</span>
-                </div>
-              </div>
-              
-              <p className="item-description">{item.description}</p>
-              
-              <button className="view-item-button" onClick={handleBackToItem}>
-                View Full Item Details
-              </button>
             </div>
-          </div>
+          )}
+          
+          {item.isError && (
+            <div className="item-error-notice">
+              <div className="notice-icon">⚠️</div>
+              <div className="notice-content">
+                <h3>Error Loading Item</h3>
+                <p>There was a problem loading this item's details. The claim information is still available below.</p>
+              </div>
+            </div>
+          )}
+          
+          {!item.isDeleted && !item.isError && (
+            <div className="item-card">
+              {item.imageUrl && (
+                <div className="item-image">
+                  <img src={item.imageUrl} alt={item.name} />
+                </div>
+              )}
+              
+              <div className="item-info">
+                <h3>{item.name}</h3>
+                
+                <div className="item-metadata">
+                  <div className="metadata-item">
+                    <span className="metadata-label">Category:</span>
+                    <span className="metadata-value">{item.category}</span>
+                  </div>
+                  
+                  <div className="metadata-item">
+                    <span className="metadata-label">Found On:</span>
+                    <span className="metadata-value">
+                      {new Date(item.reportedAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  
+                  <div className="metadata-item">
+                    <span className="metadata-label">Location:</span>
+                    <span className="metadata-value">{item.locationFound}</span>
+                  </div>
+                </div>
+                
+                <p className="item-description">{item.description}</p>
+                
+                <button className="view-item-button" onClick={handleBackToItem}>
+                  View Full Item Details
+                </button>
+              </div>
+            </div>
+          )}
         </div>
         
         <div className="claim-details">
@@ -204,11 +269,31 @@ function ClaimVerificationPage() {
             </div>
           </div>
         </div>
+        {/* Show the MoreInfoResponse component when more info is requested */}
+        {claim.status === 'pending_more_info' && currentUser.uid === claim.claimantId && (
+          <div className="more-info-response-section">
+            <MoreInfoResponse
+              claim={{
+                ...claim,
+                itemIsDeleted: item.isDeleted || false,
+                itemIsError: item.isError || false
+              }}
+              onResponseSubmit={handleStatusUpdate}
+            />
+          </div>
+        )}
         
-        {canApproveClaim && claim.status === 'pending' && (
+        {canApproveClaim && (
+          claim.status === 'pending' || 
+          (claim.moreInfoResponse && claim.status === 'pending_more_info')
+        ) && (
           <div className="claim-approval-section">
-            <ClaimApprovalInterface 
-              claim={claim}
+            <ClaimApprovalInterface
+              claim={{
+                ...claim,
+                itemIsDeleted: item.isDeleted || false,
+                itemIsError: item.isError || false
+              }}
               onStatusUpdate={handleStatusUpdate}
             />
           </div>

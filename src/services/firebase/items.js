@@ -18,7 +18,7 @@ import {
   Timestamp
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-
+ 
 /**
  * Get an item by ID
  * @param {string} itemId - The ID of the item to retrieve
@@ -28,11 +28,26 @@ export const getItemById = async (itemId) => {
   try {
     const itemRef = doc(db, 'items', itemId);
     const itemSnap = await getDoc(itemRef);
-    
+   
     if (!itemSnap.exists()) {
-      throw new Error(`Item with ID ${itemId} not found`);
+      console.warn(`Item with ID ${itemId} not found, returning placeholder data`);
+      // Return placeholder data for missing items instead of throwing an error
+      return {
+        id: itemId,
+        name: "Item Not Available",
+        category: "Unknown",
+        description: "This item is no longer available in the database.",
+        reportedAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        date: new Date().toISOString(),
+        locationFound: "Unknown",
+        status: "deleted",
+        reportedBy: "unknown",
+        location: "Unknown",
+        isDeleted: true // Flag to indicate this is a placeholder for a deleted item
+      };
     }
-    
+   
     return {
       id: itemSnap.id,
       ...itemSnap.data(),
@@ -43,10 +58,24 @@ export const getItemById = async (itemId) => {
     };
   } catch (error) {
     console.error("Error getting item:", error);
-    throw error;
+    // Return placeholder data instead of throwing an error
+    return {
+      id: itemId,
+      name: "Error Loading Item",
+      category: "Unknown",
+      description: "There was an error loading this item.",
+      reportedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      date: new Date().toISOString(),
+      locationFound: "Unknown",
+      status: "error",
+      reportedBy: "unknown",
+      location: "Unknown",
+      isError: true
+    };
   }
 };
-
+ 
 /**
  * Get items reported by a specific user
  * @param {string} userId - The ID of the user
@@ -55,15 +84,15 @@ export const getItemById = async (itemId) => {
 export const getUserItems = async (userId) => {
   try {
     console.log(`Fetching items for user: ${userId}`);
-    
+   
     if (!userId) {
       console.error("getUserItems called with no userId");
       return [];
     }
-    
+   
     const itemsRef = collection(db, 'items');
     let items = [];
-    
+   
     try {
       // Try with the compound query first (requires index)
       const q = query(
@@ -71,16 +100,16 @@ export const getUserItems = async (userId) => {
         where('reportedBy', '==', userId),
         orderBy('reportedAt', 'desc')
       );
-      
+     
       console.log(`Query created with reportedBy: ${userId}`);
-      
+     
       const querySnapshot = await getDocs(q);
       console.log(`Query returned ${querySnapshot.size} items`);
-      
+     
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         console.log(`Item found: ${doc.id} status: ${data.status}`);
-        
+       
         items.push({
           id: doc.id,
           ...data,
@@ -93,19 +122,19 @@ export const getUserItems = async (userId) => {
     } catch (indexError) {
       // If index error occurs, fall back to a simpler query
       console.warn("Index error, falling back to simple query:", indexError);
-      
+     
       const simpleQuery = query(
         itemsRef,
         where('reportedBy', '==', userId)
       );
-      
+     
       const querySnapshot = await getDocs(simpleQuery);
       console.log(`Simple query returned ${querySnapshot.size} items`);
-      
+     
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         console.log(`Item found: ${doc.id} status: ${data.status}`);
-        
+       
         items.push({
           id: doc.id,
           ...data,
@@ -115,11 +144,11 @@ export const getUserItems = async (userId) => {
           location: data.location?.locationDescription || (data.location?._lat ? `${data.location._lat}, ${data.location._long}` : 'Unknown')
         });
       });
-      
+     
       // Sort manually since we can't use orderBy
       items.sort((a, b) => new Date(b.reportedAt) - new Date(a.reportedAt));
     }
-    
+   
     console.log(`Returning ${items.length} items`);
     return items;
   } catch (error) {
@@ -128,7 +157,7 @@ export const getUserItems = async (userId) => {
     return [];
   }
 };
-
+ 
 /**
  * Get all items in the system
  * @returns {Promise<Array<Object>>} Array of all item objects
@@ -137,7 +166,7 @@ export const getAllItems = async () => {
   try {
     const itemsRef = collection(db, 'items');
     const querySnapshot = await getDocs(itemsRef);
-    
+   
     const items = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
@@ -150,14 +179,14 @@ export const getAllItems = async () => {
         location: data.location?.locationDescription || (data.location?._lat ? `${data.location._lat}, ${data.location._long}` : 'Unknown')
       });
     });
-    
+   
     return items;
   } catch (error) {
     console.error("Error getting all items:", error);
     return [];
   }
 };
-
+ 
 /**
  * Upload an image to Firebase Storage
  * @param {File} imageFile - The image file to upload
@@ -166,26 +195,26 @@ export const getAllItems = async () => {
  */
 const uploadImage = async (imageFile, userId) => {
   if (!imageFile) return null;
-  
+ 
   try {
     // Create a unique filename
     const timestamp = Date.now();
     const filename = `${timestamp}_${imageFile.name}`;
     const storageRef = ref(storage, `item-images/${userId}/${filename}`);
-    
+   
     // Upload the file
     const snapshot = await uploadBytes(storageRef, imageFile);
-    
+   
     // Get the download URL
     const downloadURL = await getDownloadURL(snapshot.ref);
-    
+   
     return downloadURL;
   } catch (error) {
     console.error("Error uploading image:", error);
     throw error;
   }
 };
-
+ 
 /**
  * Report a new found item
  * @param {Object} itemData - Data for the new item
@@ -194,10 +223,10 @@ const uploadImage = async (imageFile, userId) => {
 export const reportItem = async (itemData) => {
   try {
     console.log("Reporting item with data:", JSON.stringify(itemData, null, 2));
-    
+   
     // Extract the image file from the item data
     const { image, ...restItemData } = itemData;
-    
+   
     // Upload the image if provided
     let imageUrl = null;
     if (image) {
@@ -205,10 +234,10 @@ export const reportItem = async (itemData) => {
       imageUrl = await uploadImage(image, itemData.reportedBy);
       console.log("Image uploaded, URL:", imageUrl);
     }
-    
+   
     // Create the item in Firestore
     const itemsRef = collection(db, 'items');
-    
+   
     const newItem = {
       ...restItemData,
       imageUrl,
@@ -218,18 +247,18 @@ export const reportItem = async (itemData) => {
       updatedAt: serverTimestamp(),
       claimCount: 0
     };
-    
+   
     console.log("Creating item in Firestore:", JSON.stringify(newItem, null, 2));
     const docRef = await addDoc(itemsRef, newItem);
     console.log("Item created with ID:", docRef.id);
-    
+   
     return docRef.id;
   } catch (error) {
     console.error("Error reporting item:", error);
     throw error;
   }
 };
-
+ 
 /**
  * Update an existing item
  * @param {string} itemId - The ID of the item to update
@@ -240,11 +269,11 @@ export const updateItem = async (itemId, itemData) => {
   try {
     // Extract the image file from the item data
     const { image, ...restItemData } = itemData;
-    
+   
     // Get the current item to check if it has an image
     const currentItem = await getItemById(itemId);
-    
-    // Upload new image if provided
+   
+    // Upload the new image if provided
     let imageUrl = currentItem.imageUrl;
     if (image) {
       // Delete the old image if it exists
@@ -257,28 +286,28 @@ export const updateItem = async (itemId, itemData) => {
           // Continue even if deleting the old image fails
         }
       }
-      
+     
       // Upload the new image
       imageUrl = await uploadImage(image, restItemData.reportedBy || currentItem.reportedBy);
     }
-    
+   
     // Update the item in Firestore
     const itemRef = doc(db, 'items', itemId);
-    
+   
     await updateDoc(itemRef, {
       ...restItemData,
       imageUrl,
       updatedAt: serverTimestamp(),
       date: restItemData.date ? Timestamp.fromDate(new Date(restItemData.date)) : currentItem.date
     });
-    
+   
     return true;
   } catch (error) {
     console.error("Error updating item:", error);
     throw error;
   }
 };
-
+ 
 /**
  * Delete an item
  * @param {string} itemId - The ID of the item to delete
@@ -288,7 +317,7 @@ export const deleteItem = async (itemId) => {
   try {
     // Get the item to check if it has an image
     const item = await getItemById(itemId);
-    
+   
     // Delete the image if it exists
     if (item.imageUrl) {
       try {
@@ -299,18 +328,18 @@ export const deleteItem = async (itemId) => {
         // Continue even if deleting the image fails
       }
     }
-    
+   
     // Delete the item from Firestore
     const itemRef = doc(db, 'items', itemId);
     await deleteDoc(itemRef);
-    
+   
     return true;
   } catch (error) {
     console.error("Error deleting item:", error);
     throw error;
   }
 };
-
+ 
 /**
  * Get recent items
  * @param {number} count - Number of items to retrieve
@@ -324,10 +353,10 @@ export const getRecentItems = async (count = 10) => {
       orderBy('reportedAt', 'desc'),
       limit(count)
     );
-    
+   
     const querySnapshot = await getDocs(q);
     const items = [];
-    
+   
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       // Only include found items
@@ -342,7 +371,7 @@ export const getRecentItems = async (count = 10) => {
         });
       }
     });
-    
+   
     return items.slice(0, count);
   } catch (error) {
     console.error("Error getting recent items:", error);
