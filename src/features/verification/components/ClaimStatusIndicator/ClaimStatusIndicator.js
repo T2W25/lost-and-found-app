@@ -1,6 +1,6 @@
 import React from 'react';
 import './ClaimStatusIndicator.css';
-
+ 
 /**
  * Component for displaying the status of a claim
  * @param {Object} props - Component props
@@ -21,6 +21,17 @@ function ClaimStatusIndicator({ status, notes, updatedAt, size = 'medium' }) {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
               <path d="M0 0h24v24H0V0z" fill="none"/>
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+            </svg>
+          )
+        };
+      case 'pending_more_info':
+        return {
+          className: 'status-pending-info',
+          text: 'Additional Info Requested',
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+              <path d="M0 0h24v24H0V0z" fill="none"/>
+              <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
             </svg>
           )
         };
@@ -81,24 +92,24 @@ function ClaimStatusIndicator({ status, notes, updatedAt, size = 'medium' }) {
         };
     }
   };
-
+ 
   const { className, text, icon } = getStatusInfo();
-  
+ 
   // Format the date
   const formatDate = (date) => {
     if (!date) return '';
-    
-    const options = { 
-      year: 'numeric', 
-      month: 'short', 
+   
+    const options = {
+      year: 'numeric',
+      month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
     };
-    
+   
     return new Date(date).toLocaleDateString(undefined, options);
   };
-
+ 
   // Render different layouts based on size
   if (size === 'small') {
     return (
@@ -107,7 +118,7 @@ function ClaimStatusIndicator({ status, notes, updatedAt, size = 'medium' }) {
       </div>
     );
   }
-
+ 
   if (size === 'large') {
     return (
       <div className={`claim-status-indicator large ${className}`}>
@@ -115,13 +126,13 @@ function ClaimStatusIndicator({ status, notes, updatedAt, size = 'medium' }) {
           <div className="status-icon">{icon}</div>
           <h3 className="status-title">Claim Status: {text}</h3>
         </div>
-        
+       
         {notes && (
           <div className="status-notes">
             <p>{notes}</p>
           </div>
         )}
-        
+       
         {updatedAt && (
           <div className="status-date">
             Last updated: {formatDate(updatedAt)}
@@ -130,7 +141,7 @@ function ClaimStatusIndicator({ status, notes, updatedAt, size = 'medium' }) {
       </div>
     );
   }
-
+ 
   // Default medium size
   return (
     <div className={`claim-status-indicator medium ${className}`}>
@@ -146,5 +157,5 @@ function ClaimStatusIndicator({ status, notes, updatedAt, size = 'medium' }) {
     </div>
   );
 }
-
+ 
 export default ClaimStatusIndicator;
