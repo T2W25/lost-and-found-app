@@ -57,6 +57,11 @@ const Header = () => {
               <li>
                 <Link to="/profile" onClick={closeMenu}>Profile</Link>
               </li>
+              {currentUser.role === 'admin' && (
+                <li>
+                  <Link to="/admin" onClick={closeMenu}>Admin Dashboard</Link>
+                </li>
+              )}
               <li className="notification-item">
                 <NotificationBell />
               </li>
