@@ -98,10 +98,10 @@ const RegisterPage = () => {
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <h1>Create an Account</h1>
+        <h1>Join CLFA</h1>
         <p className="auth-subtext">
-          Join our lost and found community to report lost items or help others
-          find their belongings.
+          Create an account with the Community Lost and Found App to report lost items
+          or help others find their belongings.
         </p>
 
         {/* Display error message if there is an error */}

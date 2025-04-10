@@ -70,9 +70,9 @@ const LoginPage = () => {
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <h1>Welcome Back</h1>
+        <h1>Welcome to CLFA</h1>
         <p className="auth-subtext">
-          Log in to access your lost and found items.
+          Log in to access the Community Lost and Found App.
         </p>
 
         {/* Display a success message if one exists (e.g., after registration) */}

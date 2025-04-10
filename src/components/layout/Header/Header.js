@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../../../assets/images/logo.png'; // Import the logo
 import { useAuth } from '../../../contexts/AuthContext';
 import NotificationBell from '../../../features/notifications/components/NotificationBell';
 import './Header.css';
@@ -28,7 +29,9 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/">CLFA</Link>
+        <Link to="/">
+          <img src={logo} alt="CLFA Logo" className="logo-image" />
+        </Link>
       </div>
       
       <button
