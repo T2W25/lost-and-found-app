@@ -1,3 +1,4 @@
+/**claimApprovalInterface.js */
 import React, { useState } from 'react';
 import { updateClaimStatus } from '../../../../services/firebase/claimSubmission';
 import { notifyClaimant, requestMoreInformation } from '../../../../services/notifications/claimNotifications/claimNotifications';
@@ -139,10 +140,36 @@ function ClaimApprovalInterface({ claim, onStatusUpdate }) {
       </div>
     );
   }
+  
+  // Don't show the interface if more information is requested and no response yet
+  if (claim.status === 'pending_more_info' && !claim.moreInfoResponse) {
+    return (
+      <div className="waiting-for-info">
+        <p>
+          Waiting for the claimant to provide the requested information.
+        </p>
+        <p className="request-details">
+          <strong>Requested information:</strong> {claim.moreInfoRequestMessage}
+        </p>
+        <p className="request-date">
+          Requested on: {new Date(claim.moreInfoRequestedAt?.toDate()).toLocaleString()}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="claim-approval-interface">
       <h3>Review Claim</h3>
+      
+      {claim.itemId && claim.itemIsDeleted && (
+        <div className="deleted-item-warning">
+          <p>
+            <strong>Warning:</strong> The item associated with this claim has been deleted from the database.
+            Please consider this when making your decision.
+          </p>
+        </div>
+      )}
       
       {error && (
         <div className="error-message">{error}</div>
@@ -163,6 +190,19 @@ function ClaimApprovalInterface({ claim, onStatusUpdate }) {
           <div className="verification-section proof-section">
             <h4>Proof of Ownership</h4>
             <p>{claim.proofOfOwnership}</p>
+          </div>
+        )}
+        
+        {claim.moreInfoResponse && (
+          <div className="verification-section additional-response-section">
+            <h4>Additional Information Response</h4>
+            <div className="info-request-details">
+              <p><strong>Request:</strong> {claim.moreInfoRequestMessage}</p>
+              <p><strong>Response:</strong> {claim.moreInfoResponse}</p>
+              <p className="response-date">
+                <small>Responded on: {claim.moreInfoResponseAt ? new Date(claim.moreInfoResponseAt.toDate()).toLocaleString() : 'Unknown'}</small>
+              </p>
+            </div>
           </div>
         )}
 
