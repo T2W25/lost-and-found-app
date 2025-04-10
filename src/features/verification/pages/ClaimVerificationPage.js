@@ -141,7 +141,7 @@ function ClaimVerificationPage() {
   // Check if user can approve/reject the claim
   const canApproveClaim = currentUser &&
     // Don't allow approving claims for deleted or error items unless user is admin
-    (!item.isDeleted && !item.isError || currentUser.role === 'admin') && (
+    ((!item.isDeleted && !item.isError) || currentUser.role === 'admin') && (
       currentUser.uid === item.reportedBy || // Item reporter
       currentUser.role === 'admin' || // Admin
       currentUser.role === 'moderator' // Moderator
@@ -284,7 +284,7 @@ function ClaimVerificationPage() {
         )}
         
         {canApproveClaim && (
-          claim.status === 'pending' || 
+          (claim.status === 'pending') ||
           (claim.moreInfoResponse && claim.status === 'pending_more_info')
         ) && (
           <div className="claim-approval-section">

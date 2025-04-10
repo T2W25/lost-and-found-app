@@ -14,6 +14,18 @@ function StatusMessages({ type, message, duration = 5000, onDismiss }) {
   const [visible, setVisible] = useState(!!message);
   const [animateOut, setAnimateOut] = useState(false);
 
+  const handleDismiss = React.useCallback(() => {
+    setAnimateOut(true);
+    
+    // Wait for animation to complete before hiding
+    setTimeout(() => {
+      setVisible(false);
+      if (onDismiss) {
+        onDismiss();
+      }
+    }, 300); // Match animation duration
+  }, [onDismiss]);
+
   useEffect(() => {
     if (message) {
       setVisible(true);
@@ -26,19 +38,7 @@ function StatusMessages({ type, message, duration = 5000, onDismiss }) {
       
       return () => clearTimeout(timer);
     }
-  }, [message, duration]);
-
-  const handleDismiss = () => {
-    setAnimateOut(true);
-    
-    // Wait for animation to complete before hiding
-    setTimeout(() => {
-      setVisible(false);
-      if (onDismiss) {
-        onDismiss();
-      }
-    }, 300); // Match animation duration
-  };
+  }, [message, duration, handleDismiss]);
 
   if (!visible || !message) {
     return null;
