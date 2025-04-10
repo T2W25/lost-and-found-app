@@ -31,12 +31,17 @@ import ProfilePage from './features/profile/pages/ProfilePage';
 import NotificationsPage from './features/notifications/pages/NotificationsPage';
 import NotificationSettingsPage from './features/notifications/pages/NotificationSettingsPage';
  
+// Admin Pages
+import AdminDashboardPage from './features/admin/pages/AdminDashboardPage';
+import DisputeResolutionPage from './features/admin/pages/DisputeResolutionPage';
+ 
 // Context Providers
 import { AuthProvider } from './contexts/AuthContext';
 import { ProfileProvider } from './contexts/ProfileContext';
  
 // Protected Route
 import ProtectedRoute from './routes/ProtectedRoute';
+import AdminRoute from './routes/AdminRoute';
  
  
 function App() {
@@ -67,6 +72,10 @@ function App() {
                 </Route>
                
                 {/* Admin Routes */}
+                <Route element={<AdminRoute />}>
+                  <Route path="/admin" element={<AdminDashboardPage />} />
+                  <Route path="/admin/disputes" element={<DisputeResolutionPage />} />
+                </Route>
               </Routes>
             </main>
             <Footer />
