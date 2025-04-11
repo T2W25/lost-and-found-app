@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { getItemById } from '../../../services/firebase/items';
-import { initiateClaim } from '../../../services/firebase/claims';
+import ClaimForm from '../../../features/verification/components/ClaimForm/ClaimForm';
 import '../../../assets/styles/ItemDetail.css';
 
 const ItemDetailPage = () => {
@@ -11,6 +11,7 @@ const ItemDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [claimRequested, setClaimRequested] = useState(false);
+  const [showClaimForm, setShowClaimForm] = useState(false);
   
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -34,20 +35,20 @@ const ItemDetailPage = () => {
     }
   }, [itemId]);
 
-  const handleClaimItem = async () => {
+  const handleClaimItem = () => {
     if (!currentUser) {
       // Redirect to login if not logged in
       navigate('/login', { state: { from: `/items/${itemId}` } });
       return;
     }
     
-    try {
-      await initiateClaim(itemId, currentUser.uid);
-      setClaimRequested(true);
-    } catch (error) {
-      console.error('Error initiating claim:', error);
-      setError('Failed to initiate claim. Please try again.');
-    }
+    // Show the claim form instead of submitting directly
+    setShowClaimForm(true);
+  };
+
+  const handleClaimSuccess = () => {
+    setClaimRequested(true);
+    setShowClaimForm(false);
   };
 
   if (loading) {
@@ -133,11 +134,16 @@ const ItemDetailPage = () => {
                       We'll contact you with next steps to verify your ownership.
                     </p>
                   </div>
+                ) : showClaimForm ? (
+                  <ClaimForm
+                    item={item}
+                    onSuccess={handleClaimSuccess}
+                  />
                 ) : (
                   <>
                     <p>Is this your item? You can submit a claim to the owner.</p>
-                    <button 
-                      className="btn btn-primary" 
+                    <button
+                      className="btn btn-primary"
                       onClick={handleClaimItem}
                     >
                       Claim This Item

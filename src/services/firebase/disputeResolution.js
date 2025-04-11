@@ -37,6 +37,58 @@ export const getFlaggedClaims = async () => {
 };
 
 /**
+ * Get all claims that have been resolved (approved or rejected)
+ * @returns {Promise<Array>} Array of resolved claim objects
+ */
+export const getResolvedDisputes = async () => {
+  try {
+    const claimsRef = collection(db, 'claims');
+    const approvedQuery = query(
+      claimsRef,
+      where('status', '==', 'approved')
+    );
+    
+    const rejectedQuery = query(
+      claimsRef,
+      where('status', '==', 'rejected')
+    );
+    
+    const [approvedSnapshot, rejectedSnapshot] = await Promise.all([
+      getDocs(approvedQuery),
+      getDocs(rejectedQuery)
+    ]);
+    
+    const resolvedClaims = [];
+    
+    approvedSnapshot.forEach((doc) => {
+      resolvedClaims.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    rejectedSnapshot.forEach((doc) => {
+      resolvedClaims.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    // Sort by resolvedAt date (newest first)
+    resolvedClaims.sort((a, b) => {
+      const dateA = a.resolvedAt?.toDate?.() || new Date(a.resolvedAt || 0);
+      const dateB = b.resolvedAt?.toDate?.() || new Date(b.resolvedAt || 0);
+      return dateB - dateA;
+    });
+    
+    return resolvedClaims;
+  } catch (error) {
+    console.error("Error getting resolved disputes:", error);
+    throw error;
+  }
+};
+
+/**
  * Resolve a dispute by updating the claim status and notifying the user
  * @param {string} disputeId - The ID of the dispute/claim to resolve
  * @param {Object} resolutionData - Data about the resolution

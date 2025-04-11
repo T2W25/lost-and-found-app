@@ -98,24 +98,30 @@ function ClaimantDetails({ dispute }) {
         <div className="detail-grid">
           <div className="detail-label">Claim Date:</div>
           <div className="detail-value">
-            {new Date(dispute.createdAt).toLocaleDateString()}
+            {dispute.createdAt && !isNaN(new Date(dispute.createdAt))
+              ? new Date(dispute.createdAt).toLocaleDateString()
+              : 'No date available'}
           </div>
           
           <div className="detail-label">Description:</div>
           <div className="detail-value description">
-            {dispute.description}
+            {dispute.description || 'No description provided'}
           </div>
           
           <div className="detail-label">Identifying Features:</div>
           <div className="detail-value">
-            {dispute.identifyingFeatures}
+            {dispute.identifyingFeatures || 'No identifying features provided'}
           </div>
           
           <div className="detail-label">Flags:</div>
           <div className="detail-value">
-            {dispute.flags.map(flag => (
-              <span key={flag} className="flag-tag">{flag}</span>
-            ))}
+            {dispute.flags && Array.isArray(dispute.flags) && dispute.flags.length > 0 ? (
+              dispute.flags.map(flag => (
+                <span key={flag} className="flag-tag">{flag}</span>
+              ))
+            ) : (
+              <span className="no-flags">No flags</span>
+            )}
           </div>
         </div>
       </div>

@@ -99,15 +99,21 @@ function DisputeResolutionPage() {
                 >
                   <div className="dispute-summary">
                     <span className="dispute-id">#{dispute.id.substring(0, 6)}</span>
-                    <span className="dispute-item-name">{dispute.itemName}</span>
+                    <span className="dispute-item-name">{dispute.itemName || 'Unnamed Item'}</span>
                     <span className="dispute-date">
-                      {new Date(dispute.createdAt).toLocaleDateString()}
+                      {dispute.createdAt && !isNaN(new Date(dispute.createdAt))
+                        ? new Date(dispute.createdAt).toLocaleDateString()
+                        : 'No date'}
                     </span>
                   </div>
                   <div className="dispute-flags">
-                    {dispute.flags.map(flag => (
-                      <span key={flag} className="flag-tag">{flag}</span>
-                    ))}
+                    {dispute.flags && Array.isArray(dispute.flags) && dispute.flags.length > 0 ? (
+                      dispute.flags.map(flag => (
+                        <span key={flag} className="flag-tag">{flag}</span>
+                      ))
+                    ) : (
+                      <span className="no-flags">No flags</span>
+                    )}
                   </div>
                 </li>
               ))}

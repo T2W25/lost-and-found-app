@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { submitClaim } from '../../../services/firebase/claimSubmission';
-import { useAuth } from '../../../contexts/AuthContext';
+import { submitClaim } from '../../../../services/firebase/claims';
+import { useAuth } from '../../../../contexts/AuthContext';
 import './ClaimForm.css';
 
 /**

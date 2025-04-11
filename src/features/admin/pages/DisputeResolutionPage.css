@@ -195,6 +195,17 @@
   margin-bottom: 8px;
 }
 
+.no-flags {
+  display: inline-block;
+  background-color: #95a5a6;
+  color: white;
+  font-size: 0.8rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-style: italic;
+}
+
 .dispute-id {
   font-family: 'Courier New', monospace;
   color: #7f8c8d;
