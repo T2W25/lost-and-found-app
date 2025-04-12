@@ -86,6 +86,10 @@
   height: 100%; /* Takes full height of li */
 }
 
+.nav a:hover {
+    color: #007bff;
+  }
+
 .logout-btn {
   background: none;
   border: none;
