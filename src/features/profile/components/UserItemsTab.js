@@ -150,7 +150,7 @@ const UserItemsTab = ({ userId }) => {
                 {item.status === 'lost' ? 'Lost on ' : 'Found on '}
                 {formatDate(item.date || item.reportedAt)}
               </p>
-              <p className="item-location">{item.location || 'No location provided'}</p>
+              <p className="item-location">{item.lostLocation || item.location || 'No location provided'}</p>
               <div className="item-links">
                 <div className="item-links-row">
                   <Link to={`/items/${item.id}`} className="item-link">

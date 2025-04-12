@@ -87,7 +87,7 @@ function ResultCard({ item }) {
           
           <div className="detail">
             <span className="detail-label">Location:</span>
-            <span className="detail-value">{item.location || 'Unknown'}</span>
+            <span className="detail-value">{item.lostLocation || item.location || 'Unknown'}</span>
           </div>
           
           <div className="detail">

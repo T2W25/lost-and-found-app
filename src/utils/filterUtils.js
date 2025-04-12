@@ -56,7 +56,9 @@ export const applyFilters = (items, filters = {}) => {
   if (filters.location) {
     const locationTerms = filters.location.toLowerCase().split(' ');
     filteredItems = filteredItems.filter(item => {
-      const location = typeof item.location === 'string' ? item.location.toLowerCase() : '';
+      // Check both lostLocation and location fields
+      const locationValue = item.lostLocation || item.location || '';
+      const location = typeof locationValue === 'string' ? locationValue.toLowerCase() : '';
       return locationTerms.some(term =>
         location.includes(term)
       );
