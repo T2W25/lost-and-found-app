@@ -23,17 +23,17 @@ function FilterFields({ filters, onFilterChange }) {
     { value: 'lost', label: 'Lost Items' }
   ];
 
-  // Categories for lost and found items
+  // Categories for lost and found items - matching the categories in ItemReportForm.js
   const categories = [
     { value: 'all', label: 'All Categories' },
-    { value: 'electronics', label: 'Electronics' },
-    { value: 'clothing', label: 'Clothing & Accessories' },
-    { value: 'personal', label: 'Personal Items' },
-    { value: 'documents', label: 'Documents & IDs' },
-    { value: 'keys', label: 'Keys & Access Cards' },
-    { value: 'bags', label: 'Bags & Luggage' },
-    { value: 'jewelry', label: 'Jewelry & Watches' },
-    { value: 'other', label: 'Other' }
+    { value: 'Electronics', label: 'Electronics' },
+    { value: 'Clothing', label: 'Clothing' },
+    { value: 'Accessories', label: 'Accessories' },
+    { value: 'Documents', label: 'Documents' },
+    { value: 'Keys', label: 'Keys' },
+    { value: 'Wallet/Purse', label: 'Wallet/Purse' },
+    { value: 'Bag/Backpack', label: 'Bag/Backpack' },
+    { value: 'Other', label: 'Other' }
   ];
 
   // Date range options

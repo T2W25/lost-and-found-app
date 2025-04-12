@@ -22,8 +22,8 @@ export const applyFilters = (items, filters = {}) => {
   
   // Apply category filter
   if (filters.category && filters.category !== 'all') {
-    filteredItems = filteredItems.filter(item => 
-      item.category && item.category.toLowerCase() === filters.category.toLowerCase()
+    filteredItems = filteredItems.filter(item =>
+      item.category && item.category === filters.category
     );
   }
   
@@ -179,14 +179,14 @@ export const getFilterOptions = () => {
     ],
     categories: [
       { value: 'all', label: 'All Categories' },
-      { value: 'electronics', label: 'Electronics' },
-      { value: 'clothing', label: 'Clothing & Accessories' },
-      { value: 'personal', label: 'Personal Items' },
-      { value: 'documents', label: 'Documents & IDs' },
-      { value: 'keys', label: 'Keys & Access Cards' },
-      { value: 'bags', label: 'Bags & Luggage' },
-      { value: 'jewelry', label: 'Jewelry & Watches' },
-      { value: 'other', label: 'Other' }
+      { value: 'Electronics', label: 'Electronics' },
+      { value: 'Clothing', label: 'Clothing' },
+      { value: 'Accessories', label: 'Accessories' },
+      { value: 'Documents', label: 'Documents' },
+      { value: 'Keys', label: 'Keys' },
+      { value: 'Wallet/Purse', label: 'Wallet/Purse' },
+      { value: 'Bag/Backpack', label: 'Bag/Backpack' },
+      { value: 'Other', label: 'Other' }
     ],
     dateRanges: [
       { value: 'all', label: 'Any Time' },
