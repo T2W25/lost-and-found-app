@@ -11,7 +11,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 // Importing the function to authenticate users using Firebase
-import { loginUser } from '../../../services/firebase/auth';
+import { signInUser } from '../../../services/firebase/auth';
 
 // Importing a function to generate a CSRF token for security purposes
 import { generateCsrfToken } from '../../../utils/security';
@@ -52,7 +52,7 @@ const LoginPage = () => {
       setError('');
 
       // Authenticate the user using Firebase login service
-      await loginUser(values.email, values.password);
+      await signInUser(values.email, values.password);
 
       // Redirect the user to the home page after successful login
       navigate('/');
@@ -70,9 +70,9 @@ const LoginPage = () => {
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <h1>Welcome Back</h1>
+        <h1>Welcome to CLFA</h1>
         <p className="auth-subtext">
-          Log in to access your lost and found items.
+          Log in to access the Community Lost and Found App.
         </p>
 
         {/* Display a success message if one exists (e.g., after registration) */}

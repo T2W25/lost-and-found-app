@@ -1,0 +1,203 @@
+.header {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 5px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1000;
+}
+
+.logo a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 60px;
+  width: auto;
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #333;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.menu-toggle.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+.nav {
+  display: flex;
+  align-items: center; /* Aligns nav content vertically */
+  height: 100%; /* Takes full height of header */
+}
+
+.nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center; /* Aligns list items vertically */
+  height: 100%; /* Takes full height of nav */
+}
+
+.nav li {
+  margin-left: 20px;
+  display: flex;
+  align-items: center; /* Aligns link content vertically */
+  height: 100%; /* Takes full height of ul */
+}
+
+.nav a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center; /* Aligns text vertically */
+  height: 100%; /* Takes full height of li */
+}
+
+.nav a:hover {
+    color: #007bff;
+  }
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.logout-btn:hover {
+  color: #007bff;
+}
+
+.notification-item {
+  position: relative;
+}
+
+/* Tablet styles */
+@media (max-width: 768px) {
+  .nav ul {
+    gap: 10px;
+  }
+  
+  .nav li {
+    margin-left: 10px;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 576px) {
+  .header {
+    padding: 12px 16px;
+  }
+  .logo-image {
+    height: 45px;
+  }
+  
+  
+  .menu-toggle {
+    display: flex;
+    position: relative;
+    z-index: 1001;
+  }
+  
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.98);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    padding: 60px 20px 20px;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .nav.open {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .nav ul {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .nav li {
+    margin: 0;
+    width: 100%;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: center;
+  }
+  
+  .nav li:last-child {
+    border-bottom: none;
+  }
+  
+  .nav a, .logout-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    padding: 8px 0;
+  }
+  
+  .logout-btn {
+    margin-top: 10px;
+    color: #dc3545;
+  }
+  
+  .notification-item {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+  }
+}
+
+/* Prevent scrolling when menu is open */
+body.menu-open {
+  overflow: hidden;
+}

@@ -16,9 +16,10 @@ const HomePage = () => {
     <div className="home-page">
       <div className="hero-section">
         <div className="container">
-          <h1>Lost Something? Found Something?</h1>
+          <h1>Community Lost and Found App</h1>
+          <h2>Lost Something? Found Something?</h2>
           <p className="hero-text">
-            Our platform connects people who have lost items with those who have found them.
+            CLFA connects people who have lost items with those who have found them.
             Report lost items, search for found items, and help others recover their belongings.
           </p>
           <div className="hero-buttons">

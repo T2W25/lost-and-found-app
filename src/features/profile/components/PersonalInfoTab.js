@@ -1,154 +1,52 @@
-// Component for managing user personal information
-import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { sanitizeInput } from '../../../utils/security';
+// Component for displaying the personal information tab in the profile page
+import React from 'react';
+import UserInfoDisplay from './UserInfoDisplay';
+import './PersonalInfoTab.css';
 
-// Validation schema
-const PersonalInfoSchema = Yup.object().shape({
-  displayName: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  phoneNumber: Yup.string().matches(
-    /^[0-9+\s-]{8,15}$/,
-    'Invalid phone number'
-  ),
-});
+/**
+ * Component for displaying the personal information tab in the profile page
+ * @param {Object} props - Component props
+ * @param {Object} props.user - The user object to display
+ * @param {Function} props.onEdit - Function to call when edit button is clicked
+ */
+function PersonalInfoTab({ user, onEdit }) {
+  if (!user) {
+    return <div className="loading">Loading user information...</div>;
+  }
 
-// Component for managing user personal information
-// This component is used in the ProfilePage component to display and update user personal information
-const PersonalInfoTab = ({ profile, onUpdate }) => {
-  const [updateStatus, setUpdateStatus] = useState({ message: '', type: '' });
-  // Function to handle form submission and update user profile data
-  // This function is called when the form is submitted
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      // Sanitize inputs
-      const sanitizedData = {
-        displayName: sanitizeInput(values.displayName),
-        phoneNumber: sanitizeInput(values.phoneNumber),
-        location: sanitizeInput(values.location),
-        bio: sanitizeInput(values.bio),
-      };
-      
-      // Call the onUpdate function to update the user profile data
-      const result = await onUpdate(sanitizedData);
-
-      // Set the update status message based on the result
-      if (result.success) {
-        setUpdateStatus({
-          message: 'Profile updated successfully!',
-          type: 'success',
-        });
-      } else {
-        setUpdateStatus({
-          message: result.error || 'Failed to update profile.',
-          type: 'error',
-        });
-      }
-    } catch (error) {
-      setUpdateStatus({
-        message: 'An error occurred. Please try again.',
-        type: 'error',
-      });
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  // Render the personal information form
-  // This form allows users to update their personal information
   return (
     <div className="personal-info-tab">
-      <h2>Personal Information</h2>
-
-      {updateStatus.message && (
-        <div
-          className={`alert ${
-            updateStatus.type === 'success' ? 'alert-success' : 'alert-danger'
-          }`}
+      <div className="tab-header">
+        <h2>Personal Information</h2>
+        <button 
+          className="edit-button"
+          onClick={onEdit}
+          aria-label="Edit personal information"
         >
-          {updateStatus.message}
-        </div>
-      )}
-
-       {/*Formik form for updating user personal information*/}
-      <Formik
-        initialValues={{
-          displayName: profile?.displayName || '',
-          phoneNumber: profile?.phoneNumber || '',
-          location: profile?.location || '',
-          bio: profile?.bio || '',
-        }}
-        validationSchema={PersonalInfoSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting }) => (
-          <Form className="profile-form">
-            <div className="form-group">
-              <label htmlFor="displayName">Full Name</label>
-              <Field
-                type="text"
-                name="displayName"
-                id="displayName"
-                className="form-control"
-              />
-              <ErrorMessage
-                name="displayName"
-                component="div"
-                className="error-message"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="phoneNumber">Phone Number (Optional)</label>
-              <Field
-                type="text"
-                name="phoneNumber"
-                id="phoneNumber"
-                className="form-control"
-              />
-              <ErrorMessage
-                name="phoneNumber"
-                component="div"
-                className="error-message"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="location">Location (Optional)</label>
-              <Field
-                type="text"
-                name="location"
-                id="location"
-                className="form-control"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="bio">Bio (Optional)</label>
-              <Field
-                as="textarea"
-                name="bio"
-                id="bio"
-                className="form-control"
-                rows="3"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Saving...' : 'Save Changes'}
-            </button>
-          </Form>
-        )}
-      </Formik>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+            <path d="M0 0h24v24H0V0z" fill="none"/>
+            <path d="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"/>
+          </svg>
+          <span>Edit</span>
+        </button>
+      </div>
+      
+      <UserInfoDisplay 
+        user={user}
+        showEmail={true}
+        showAddress={true}
+        showPhone={true}
+      />
+      
+      <div className="privacy-notice">
+        <h3>Privacy Notice</h3>
+        <p>
+          Your personal information is only visible to you and the administrators of the Lost & Found system.
+          When you report an item or make a claim, only your name will be shared with the other party.
+        </p>
+      </div>
     </div>
   );
-};
+}
 
 export default PersonalInfoTab;
